@@ -2,7 +2,7 @@
     "name": "react-bootstrap-treeview",
     "description": "React Tree View for Twitter Bootstrap",
     "version": "0.1.0",
-    "main": "src/app.jsx",
+    "main": "app.jsx",
     "homepage": "https://github.com/jonmiles/react-bootstrap-treeview",
     "author": {
         "name": "Jonathan Miles"
