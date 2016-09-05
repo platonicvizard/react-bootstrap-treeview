@@ -1,16 +1,17 @@
 
 var webpack = require('webpack');
 var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
       context: __dirname,
     devtool:  "absolute-resource-path",
     entry: [
         'babel-polyfill',
-        "./app.jsx"
+        "./src/app.jsx"
     ],
     output: {
-        path: __dirname + '/build',
+        path: __dirname + '/lib',
         filename: "bundle.js"
     },
     module: {
@@ -28,7 +29,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new HtmlWebpackPlugin({
+    title: 'React.js Tree View <i>for Twitter Bootstrap</i>',
+    template: './src/index.ejs'
+  })
     ],
     resolve: {
         extensions: ['', '.js', '.jsx', '.css'],

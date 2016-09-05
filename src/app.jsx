@@ -1,11 +1,12 @@
 /**
  * Module dependencies.
  */
-import TreeView from './src';
+import TreeView from './index.jsx';
 import {render} from 'react-dom';
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./src/style.less";
+import "./style.less";
+//require('file?name=[name].[ext]!../index.html');
 
 var data = [
     {

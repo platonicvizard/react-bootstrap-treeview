@@ -2,7 +2,7 @@
   "name": "platonic-react-bootstrap-treeview",
   "description": "React Tree View for Twitter Bootstrap",
   "version": "0.1.1",
-  "main": "app.jsx",
+  "main": "src/app.jsx",
   "homepage": "https://github.com/platonicvizard/react-bootstrap-treeview",
   "author": {
     "name": "Jonathan Miles"
@@ -15,7 +15,7 @@
     "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
     "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
     "coveralls": "cat coverage/lcov.info | coveralls",
-    "clean": "rm app.js"
+    "clean": "rm lib"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
   "devDependencies": {
     "babel-polyfill": "^6.13.0",
     "coveralls": "^2.11.2",
+    "html-webpack-plugin": "^2.22.0",
     "istanbul": "^0.3.7",
     "istanbul-instrumenter-loader": "^0.1.2",
     "karma": "^0.13.9",
