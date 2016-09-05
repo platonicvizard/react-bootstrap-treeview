@@ -5,21 +5,39 @@ class TreeNode extends Component {
     constructor(props, context) {
         super(props, context);
         var node = this.props.node;
-
-        function getProp(name, defaultValue) {
+        this.selectedEventProp = this.props.selectedEvent;
+        
+        var getProp = this.getProp = (name, defaultValue) => {
             var state = node.state;
             return (state && state.hasOwnProperty(name)) ? state[name] : defaultValue;
-        }
-
+        };
+        this.selectedEvent = this.selectedEvent.bind(this);
         this.state = {
             expanded: getProp('expanded', (this.props.level < this.props.options.levels) ? true : false),
             selected: getProp('selected', false),
             selectable: getProp('selectable', false),
-            single: getProp('single', false)//TODO: work in progress. Allow to select only one node
+            selectedEvent: this.selectedEvent
         };
         this.toggleExpanded = this.toggleExpanded.bind(this);
         this.toggleSelected = this.toggleSelected.bind(this);
+        this.curSelected = null;
+        this.prevSelected = null;
+    }
+    selectedEventProp(e) { 
+        console.log(e);
+    }
+    selectedEvent(e) {
+        var event = this.getProp('selectedEvent', null);
+        if (event) {
+            event.apply(this,e);
+        }
+        this.prevSelected = this.curSelected;
+        this.curSelected = this;
+        var se = this.selectedEventProp;
 
+        if (se) { 
+            se.apply(this,[e]);
+        }
     }
     toggleExpanded(event, id) {
         this.setState({ expanded: !this.state.expanded });
@@ -29,6 +47,10 @@ class TreeNode extends Component {
     toggleSelected(index, event, id) {
         if (!this.state.selectable) { return; }
         this.setState({ selected: !this.state.selected });
+        var selectedEvent = this.state.selectedEvent;
+        if (selectedEvent) {
+            selectedEvent.bind(this, [event])();
+        }
         event.stopPropagation();
     }
     render() {
@@ -74,9 +96,21 @@ class TreeNode extends Component {
             </span>
         );
 
-        var nodeText = options.enableLinks ? (<a href={node.href}> {node.text} </a>) : (<span>{node.text}</span>);
-
+        var nodeText;
         var badges;
+        var el = node.el;
+        var np = node.elProps;
+
+        np = np ? np : {};
+        if (!np.href) {
+            np.href = node.href;
+        }
+
+        el = el ? el : (options.enableLinks ? 'a' : 'span');
+
+        nodeText = React.createElement(el, np, node.text);
+
+
         if (options.showTags && node.tags) {
             badges = node.tags.map(function (tag, index, arr) {
                 return (<span key={'badge-' + index} className='badge'>{tag}</span>);
@@ -90,7 +124,7 @@ class TreeNode extends Component {
             node.nodes.forEach(function (node, index, arr) {
                 children.push(
                     <ul className="list-group" key={'parent-node-' + index}>
-                        <TreeNode
+                        <TreeNode selectedEvent={_this.props.selectedEvent}
                             key={'child-parent-node-' + index}
                             node={node}
                             level={_this.props.level + 1}

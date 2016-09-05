@@ -10,6 +10,7 @@ class TreeView extends Component {
     constructor(props, context) {
         super(props, context);
 
+        TreeView.singleSelection = props.singleSelection;
         this.setNodeId = (node) => {
 
             if (!node.nodes) return;
@@ -21,8 +22,16 @@ class TreeView extends Component {
                 _this.setNodeId(node);
             });
         }
+        TreeView.curSelected = null;
+        TreeView.prevSelected = null;
     }
-
+    selectedEvent(e) {
+        TreeView.prevSelected = TreeView.curSelected;
+        TreeView.curSelected = this;
+        if (TreeView.singleSelection && TreeView.prevSelected && TreeView.prevSelected !== TreeView.curSelected) {
+            TreeView.prevSelected.setState({ selected: false })
+        }
+    }
     render() {
 
         var data = this.props.data;
@@ -32,12 +41,13 @@ class TreeView extends Component {
         if (data) {
             var _this = this;
             data.forEach(function (node, index, arr) {
-                children.push(<TreeNode
-                    key={'root-parent-node-'+index}
+                var tn = <TreeNode selectedEvent={_this.selectedEvent }
+                    key={'root-parent-node-' + index}
                     node={node}
                     level={1}
                     visible={true}
-                    options={_this.props} />);
+                    options={_this.props} />;
+                children.push(tn);
             });
         }
 
