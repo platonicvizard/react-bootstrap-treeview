@@ -6,7 +6,6 @@ import {render} from 'react-dom';
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.less";
-//require('file?name=[name].[ext]!../index.html');
 
 var data = [
     {
